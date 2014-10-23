@@ -1,0 +1,27 @@
+[credential]
+	helper = !'C:\\Users\\g.stevenson\\AppData\\Roaming\\GitCredStore\\git-credential-winstore.exe'
+[diff]
+  tool = bc3
+[difftool]
+  prompt = false
+[difftool "bc3"]
+  cmd = \"c:/program files (x86)/beyond compare 3/bcomp.exe\" \"$LOCAL\" \"$REMOTE\"
+[merge]
+  tool = bc3
+[mergetool]
+  prompt = false
+  keepBackup = false
+[mergetool "bc3"]
+  cmd = \"c:/program files (x86)/beyond compare 3/bcomp.exe\" \"$LOCAL\" \"$REMOTE\" \"$BASE\" \"$MERGED\"
+  trustExitCode = true
+[user]
+	email = stevenson.garrett@gmail.com
+	name = Garrett Stevenson
+[push]
+	default = simple
+[alias]
+	plog = log --graph --oneline
+	lg1 = log --graph --abbrev-commit --decorate --date=relative --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)' --all
+	lg2 = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n''          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)' --all
+	lg = !"git lg1"
+  st = status
