@@ -26,3 +26,4 @@
   lg = !"git lg1"
   st = status
   cp = cherry-pick
+  cpc = cherry-pick --continue
