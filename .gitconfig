@@ -27,3 +27,4 @@
   st = status
   cp = cherry-pick
   cpc = cherry-pick --continue
+  rbc = rebase --continue
