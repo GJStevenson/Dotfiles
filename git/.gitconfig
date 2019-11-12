@@ -1,30 +1,29 @@
-[credential]
-  helper = !'C:\\Users\\g.stevenson\\AppData\\Roaming\\GitCredStore\\git-credential-winstore.exe'
-[diff]
-  tool = bc3
-[difftool]
-  prompt = false
-[difftool "bc3"]
-  cmd = \"c:/program files (x86)/beyond compare 3/bcomp.exe\" \"$LOCAL\" \"$REMOTE\"
-[merge]
-  tool = bc3
-[mergetool]
-  prompt = false
-  keepBackup = false
-[mergetool "bc3"]
-  cmd = \"c:/program files (x86)/beyond compare 3/bcomp.exe\" \"$LOCAL\" \"$REMOTE\" \"$BASE\" \"$MERGED\"
-  trustExitCode = true
 [user]
-  email = stevenson.garrett@gmail.com
-  name = Garrett Stevenson
-[push]
-  default = simple
+    name = Garrett Stevenson
+    email = stevenson.garrett@gmail.com
+[color]
+    diff = auto
+    status = auto
+    branch = auto
+[core]
+    editor = vim
+    autocrlf = input
+[apply]
+    whitespace = nowarn
+[format]
+    pretty = %C(yellow)%h%Creset %s %C(red)(%an, %cr)%Creset
 [alias]
-  plog = log --graph --oneline
-  lg1 = log --graph --abbrev-commit --decorate --date=relative --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)' --all
-  lg2 = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n''          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)' --all
-  lg = !"git lg1"
-  st = status
-  cp = cherry-pick
-  cpc = cherry-pick --continue
-  rbc = rebase --continue
+    plog = log --graph --oneline
+    st = status
+    cp = cherry-pick
+    cpc = cherry-pick --continue
+    rbc = rebase --continue
+    ane = commit --amend --no-edit
+    chk = checkout
+    diffs  = diff --staged
+    co = checkout
+
+[push]
+    default = simple
+[rebase]
+    autosquash = true
