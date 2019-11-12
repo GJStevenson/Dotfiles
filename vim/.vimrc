@@ -1,34 +1,43 @@
 set nocompatible
-
-scriptencoding utf-8
 set encoding=utf-8
 
-" plugins
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-Plugin 'VundleVim/Vundle.vim'
-Plugin 'scrooloose/nerdtree'
-Plugin 'vim-ruby/vim-ruby'
-Plugin 'ctrlpvim/ctrlp.vim'
-call vundle#end()
+" Load plug
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
+
+" Load plugins
+call plug#begin('~/.vim/plugged')
+Plug 'tpope/vim-surround'
+Plug 'vim-airline/vim-airline'
+Plug 'scrooloose/syntastic'
+Plug 'scrooloose/nerdcommenter'
+Plug 'valloric/youcompleteme'
+Plug 'ctrlpvim/ctrlp.vim'
+Plug 'prettier/vim-prettier', { 'do': 'yarn install' }
+Plug 'rust-lang/rust.vim'
+Plug 'prabirshrestha/async.vim'
+Plug 'prabirshrestha/vim-lsp'
+Plug 'prabirshrestha/asyncomplete.vim'
+Plug 'prabirshrestha/asyncomplete-lsp.vim'
+call plug#end()
+
+" Plugin configuration
+let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\|git'
+
+" Prettier save
+let g:prettier#autoformat = 0
+autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue PrettierAsync
 
 " Local config
 if filereadable(".vimrc.local")
   source .vimrc.local
 endif
 
-" ctrlp Configuration
-set runtimepath^=~/.vim/bundle/ctrlp.vim
-
-" Nerdtree Configuration
-let NerdtreDTreeDirArrows = 1
-let g:NERDTreeDirArrowExpandable = ''
-let g:NERDTreeDirArrowCollapsible = '�'
-
-" Starts Nerdtree automatically when no files specified
-autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
-map <C-n> :NERDTreeToggle<CR>
+" Prettier
+"autocmd BufWritePre *.js :normal gggqG
 
 " allow backspacing over everything in insert mode
 set backspace=indent,eol,start
@@ -40,9 +49,6 @@ set ruler		" show the cursor position all the time
 set showcmd		" display incomplete commands
 set incsearch		" do incremental searching
 
-" Don't use Ex mode, use Q for formatting
-map Q gq
-
 " Switch syntax highlighting on, when the terminal has colors
 " Also switch on highlighting the last used search pattern.
 if (&t_Co > 2 || has("gui_running")) && !exists("syntax_on")
@@ -52,48 +58,6 @@ endif
 
 " Switch wrap off for everything
 set nowrap
-
-" Only do this part when compiled with support for autocommands.
-if has("autocmd")
-  " Enable file type detection.
-  " Use the default filetype settings, so that mail gets 'tw' set to 72,
-  " 'cindent' is on in C files, etc.
-  " Also load indent files, to automatically do language-dependent indenting.
-  filetype on
-  filetype plugin on
-  filetype indent on
-
-  " Set File type to 'text' for files ending in .txt
-  autocmd BufNewFile,BufRead *.txt setfiletype text
-
-  " Enable soft-wrapping for text files
-  autocmd FileType text,markdown,html,xhtml,eruby setlocal wrap linebreak nolist
-
-  " Put these in an autocmd group, so that we can delete them easily.
-  augroup vimrcEx
-  au!
-
-  " For all text files set 'textwidth' to 78 characters.
-  " autocmd FileType text setlocal textwidth=78
-
-  " When editing a file, always jump to the last known cursor position.
-  " Don't do it when the position is invalid or when inside an event handler
-  " (happens when dropping a file on gvim).
-  autocmd BufReadPost *
-    \ if line("'\"") > 0 && line("'\"") <= line("$") |
-    \   exe "normal g`\"" |
-    \ endif
-
-  " Automatically load .vimrc source when saved
-  autocmd BufWritePost .vimrc source $MYVIMRC
-
-  augroup END
-
-else
-
-  set autoindent		" always set autoindenting on
-
-endif " has("autocmd")
 
 " Set tab spaces
 set tabstop=4
@@ -116,7 +80,7 @@ nmap <F1> <Esc>
 imap <Tab> <C-N>
 
 " Remaps escape to something easier to type
-imap jk <Esc>
+imap jj <Esc>
 
 " Remaps pane navigation to remove having to hit ctrl w
 nnoremap <C-J> <C-W><C-J>
@@ -126,10 +90,6 @@ nnoremap <C-H> <C-W><C-H>
 
 " Display extra whitespace
 set list listchars=tab:»·,trail:·
-
-" Edit routes
-command! Rroutes :e config/routes.rb
-command! Rschema :e db/schema.rb
 
 " Use Ack instead of Grep when available
 if executable("ack")
@@ -159,4 +119,33 @@ set guicursor=n-v-c:block-Cursor
 set guicursor+=i:ver100-iCursor
 set guicursor+=n-v-c:blinkon0
 set guicursor+=i:blinkwait10
+
+" Enable folding
+set foldmethod=indent
+set foldlevel=99
+
+"python with virtualenv support
+" py << EOF
+" import os
+" import sys
+" if 'VIRTUAL_ENV' in os.environ:
+ " project_base_dir = os.environ['VIRTUAL_ENV']
+ " activate_this = os.path.join(project_base_dir, 'bin/activate_this.py')
+ " execfile(activate_this, dict(__file__=activate_this))
+" EOF
+
+"Tabs and Spaces
+set tabstop=4
+set shiftwidth=4
+
+let python_highlight_all=1
+
+if executable('rls')
+    au User lsp_setup call lsp#register_server({
+            \ 'name': 'rls',
+            \ 'cmd': {server_info->['rustup', 'run', 'nightly', 'rls']},
+            \ 'whitelist': ['rust'],
+            \ })
+endif 
+
 
