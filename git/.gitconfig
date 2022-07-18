@@ -22,8 +22,10 @@
     chk = checkout
     diffs  = diff --staged
     co = checkout
-
+    chp = cherry-pick
 [push]
     default = simple
 [rebase]
     autosquash = true
+[init] 
+    defaultBranch = main 
